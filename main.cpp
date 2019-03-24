@@ -2,6 +2,8 @@
 #include <string>
 #include <iomanip>
 
+//apsirašiau bibliotekas
+
 using namespace std;
 
 struct Studentas {
@@ -10,7 +12,7 @@ struct Studentas {
     double vid = 0;
     int egzas = 0;
 };
-
+//apsirašiau struktūrą
 void TikrintiPavadinima( string &pav ) {
     const int n = pav.length();
 
@@ -19,70 +21,71 @@ void TikrintiPavadinima( string &pav ) {
             continue;
         } else {
             cout << endl << "Blogai ivestas studento vardas" << endl << endl;
-            cout << "�veskite dar kart�: ";
+            cout << "Áveskite dar kartà: ";
             cin >> pav;
 
             i = 0;
         }
     }
 }
-
+//apsirašiu void funkcija kuri patikrina ar įmanomas toks vardas(ar pirmas elemantas mažoji ar didžioji raidė o sekantys elementai iš mažosios) užklausiame vartotojo įvesti studento vardą jį patikriname jei vardas neegzistuoja išvedame i ekraną įveskite dar kartą.
 int GautiSkaiciu() {
     string input;
     cin >> input;
 
     while ( input.find_first_not_of( "0123456789" ) != string::npos ) {
-        cout << endl << "Blogai �vestas skai�ius" << endl << endl;
-        cout << "�veskite dar karta: ";
+        cout << endl << "Blogai ávestas skaièius" << endl << endl;
+        cout << "Áveskite dar karta: ";
         cin >> input;
     }
 
     return stoi( input );
 }
 
+// Sukdami while ciklą tikriname ar musu stringas nėra lygus vienam iš nurodytų "find_first_not_of" argumentų, jei yra tada gražiname gerą skaičių jei ne jis gražina" blogai įvestas skaičius".
 int main() {
     setlocale( LC_ALL, "Lithuanian" );
-
+//Nustatome lietuvių kalbą.
     int s;
 
-    cout << "�veskite studentu skai�ius: ";
+    cout << "Áveskite studentu skaièius: ";
     cin >> s;
-
+//paprašome vartotoją įvesti studentų skaičių tą skaičių panaudojame for ciklui norodyti iki kokios reikšmės sukamas foras.
     Studentas studentai[100];
 
     for ( int i = 0; i < s; i++ ) {
-        cout << "�veskite " << i+1 << " studento vard�: ";
+        cout << "Áveskite " << i+1 << " studento vardà: ";
         cin >> studentai[i].vardas;
         TikrintiPavadinima( studentai[i].vardas );
-
+//Vartotoją prašome įvesti vardą jį siunčiame į void funkciją kad patikritų ar jis egzistuoja.
         cout << endl;
-        cout << "Pavard�: ";
+        cout << "Pavardæ: ";
         cin >> studentai[i].pavarde;
         TikrintiPavadinima( studentai[i].pavarde );
-
-        cout << "Studento "  << i+1 << " namu darbu skai�i�: ";
+//Vartotoją prašome įvesti pavardę jį siunčiame į void funkciją kad patikritų ar jis egzistuoja.
+        cout << "Studento "  << i+1 << " namu darbu skaièiø: ";
         int n    = GautiSkaiciu();
         int suma = 0;
-
+//Vartotoją prašome įvesti namų darbų skaičių iš funkcijos"GautiSkaičių".
         for ( int j = 0, k; j < n; j++ ) {
-            cout << "Iveskite pa�ym�: ";
+            cout << "Iveskite paþymá: ";
             k = GautiSkaiciu();
-
+//sukame for ciklą ir prašome vartotoją įvesti pažymį iš "GautiSkaiciu()" .
             while ( k < 1 || k > 10 ) {
-                cout << "Ivestas skai�ius yra per ma�as/didelis." << endl;
-                cout << "Bandykite dar kart�: ";
+                cout << "Ivestas skaièius yra per maþas/didelis." << endl;
+                cout << "Bandykite dar kartà: ";
                 k = GautiSkaiciu();
             }
 
             suma = suma + k;
         }
-
+//tikriname ar pažimys yra tarp vieneto ir dešimties tada siunčiamas kad butų patikrinamas.
         studentai[i].vid = suma / n;
-
-        cout << "Iveskite egzamino rezultat�: ";
+//vidurkį apskaičiuojame šia formule.
+        cout << "Iveskite egzamino rezultatà: ";
         studentai[i].egzas = GautiSkaiciu();
     }
-
+//Vartotoją yra prašoma įvesti egzamino pažimį iš funkcijos "GautiSkaičiu()".
     cout << "Vardas\t" << "Pavarde\t" << "\t" << "Galutinis (Vid.)" << endl;
     cout << "----------------------------------------" << endl;
 
@@ -91,6 +94,6 @@ int main() {
         cout.width(29);
         cout<< fixed << setprecision( 2 ) << ( 0.4 * studentai[i].vid + 0.6 * studentai[i].egzas ) << endl;
     }
-
+//viskas išspauzdinama lentelėje.
     return 0;
 }
