@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-
+#include <vector>//Itraukiame papildoma vektoriaus biblioteka.
 //apsirašiau bibliotekas
 using namespace std;
 
@@ -38,7 +38,9 @@ int GautiSkaiciu() {
         cout << "Įveskite dar karta: ";
         cin >> input;
     }
-
+if ( !cin ) { //Jeigu nėra inpto gražinamas vienetas.
+        return 1;
+    }
     return stoi( input );
 }
 // Sukdami while cikla tikriname ar musu stringas nera lygus vienam iš nurodytu "find_first_not_of" argumentu, jei yra tada gražiname gera skaiciu jei ne jis gražina" blogai ivestas skaicius".
@@ -53,7 +55,7 @@ int main() {
     Studentas studentai[ 100 ];
 
     for ( int i = 0; i < s; i++ ) {
-        cout << "Iveskite:" << i+1 << " studento varda: ";
+        cout << "Iveskite " << i+1 << " studento varda: ";
         cin >> studentai[i].vardas;
         TikrintiPavadinima( studentai[i].vardas );
 //Vartotoja prašome ivesti varda ji siunciame i void funkcija kad patikritu ar jis egzistuoja.
@@ -61,29 +63,44 @@ int main() {
         cout << "Pavarde: ";
         cin >> studentai[i].pavarde;
         TikrintiPavadinima( studentai[i].pavarde );
+
 //Vartotoja prašome ivesti pavarde ji siunciame i void funkcija kad patikritu ar jis egzistuoja.
-        cout << "Studento "<<i+1<<"namu darbu skaicius: ";
-        int n    = GautiSkaiciu();
-        int suma = 0;
-//Vartotoja prašome ivesti namu darbu skaiciu iš funkcijos"GautiSkaiciu".
-        for ( int j = 1, k; j <= n; j++ ) {
+
+       vector<int> pazymiai;
+        int k;
+        cout << "Ivesti galite uzbaigti paspaude CTRL + Z." << endl;
+while ( cin ) {
             cout << "Iveskite pazymi: ";
             k = GautiSkaiciu();
-//sukame for cikla ir prašome vartotoja ivesti pažymi iš "GautiSkaiciu()" .
+//Kol egzistuoja ivestis tol su while prasome ivesti pažymį.
             while ( k < 1 || k > 10 ) {
                 cout << "Ivestas skaicius yra per mazas/didelis." << endl;
                 cout << "Bandykite dar karta: ";
                 k = GautiSkaiciu();
             }
-//tikriname ar pažimys yra tarp vieneto ir dešimties tada siunciamas kad butu patikrinamas.
-            if ( n % 2 && j == ( n / 2 + 1 ) ) {
-                studentai[ i ].med = k;
-            } else if ( !( n % 2 ) && ( j == ( n / 2 ) || j == ( n / 2 + 1 ) ) ) {
-                studentai[i].med += k;
+//Kol pažimys mažesnis uz vienetą ir didesnis už dešimt išvesti nurodytą tekstą.
+            if ( cin ) {
+                pazymiai.push_back( k );
             }
-//Tikrinamas medianos tipas.
-            suma += k;
         }
+//pridedame elementą pabaigoje
+        cin.clear();
+//Ištrina bloga įvestį.
+        int n = pazymiai.size();
+// nuskaitome kiek pažymių.
+        if ( n ) {
+            int suma = 0;
+
+            for ( int j = 0; j < n; j++ ) {
+                suma += pazymiai[ i ];
+
+                if ( n % 2 && j == ( n / 2 + 1 ) ) {
+                    studentai[ i ].med = pazymiai[ i ];
+                } else if ( !( n % 2 ) && ( j == ( n / 2 ) || j == ( n / 2 + 1 ) ) ) {
+                    studentai[ i ].med += pazymiai[ i ];
+                }
+            }
+//Nustatomas medianos tipas.
 
         if ( !( n % 2 ) ) {
             studentai[i].med /= 2;
@@ -91,6 +108,7 @@ int main() {
         }
 
         studentai[i].vid = suma / n;
+    }
 //vidurki apskaiciuojame šia formule.
         cout << "Iveskite egzamino rezultata: ";
         studentai[i].egz = GautiSkaiciu();
