@@ -68,23 +68,29 @@ int main() {
 
        vector<int> pazymiai;
         int k;
-        cout << "Ivesti galite uzbaigti paspaude CTRL + Z." << endl;
-while ( cin ) {
+        char  o;
+        cout << "Iveskite pazymi: ";
+        k = rand() % 10 + 1 ;//generuojam atsitiktin5 skaičių nuo 1 iki 10
+        cout << k << endl;
+            cout << "Ar dar bus? ";
+            cin >> o;
+            cout << endl;
+
+while ( o == 'T' || o == 't') {//suksis ciklas kol 5vestis yra t
             cout << "Iveskite pazymi: ";
-            k = GautiSkaiciu();
-//Kol egzistuoja ivestis tol su while prasome ivesti pažymį.
-            while ( k < 1 || k > 10 ) {
-                cout << "Ivestas skaicius yra per mazas/didelis." << endl;
-                cout << "Bandykite dar karta: ";
-                k = GautiSkaiciu();
-            }
+            k = rand() % 10 + 1 ;
+            cout << k << endl;
 //Kol pažimys mažesnis uz vienetą ir didesnis už dešimt išvesti nurodytą tekstą.
             if ( cin ) {
-                pazymiai.push_back( k );
+                pazymiai.push_back( k );//gautą atsakymą stumia i vektoriaus galą
             }
+            cout << "Ar dar bus? ";
+            cin >> o;
+            cout << endl;
         }
 //pridedame elementą pabaigoje
         cin.clear();
+
 //Ištrina bloga įvestį.
         int n = pazymiai.size();
 // nuskaitome kiek pažymių.
@@ -111,7 +117,8 @@ while ( cin ) {
     }
 //vidurki apskaiciuojame šia formule.
         cout << "Iveskite egzamino rezultata: ";
-        studentai[i].egz = GautiSkaiciu();
+        studentai[i].egz = rand()% 10 + 1;
+        cout << studentai[i].egz<<endl;
     }
 //Vartotoja yra prašoma ivesti egzamino pažimi iš funkcijos "GautiSkaiciu()".
     cout << "Isvesti mediana (T) ar vidurki (N): ";
