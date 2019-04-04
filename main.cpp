@@ -69,22 +69,22 @@ int main() {
        vector<int> pazymiai;
         int k;
         char  o;
-        cout << "Iveskite pazymi: ";
+        cout << "Sugeneruotas pazimys: ";
         k = rand() % 10 + 1 ;//generuojam atsitiktin5 skaičių nuo 1 iki 10
         cout << k << endl;
-            cout << "Ar dar bus? ";
+            cout << "Ar testi pazymiu generavima? ";
             cin >> o;
             cout << endl;
 
 while ( o == 'T' || o == 't') {//suksis ciklas kol 5vestis yra t
-            cout << "Iveskite pazymi: ";
+            cout << "Sugeneruotas pazimys: ";
             k = rand() % 10 + 1 ;
             cout << k << endl;
 //Kol pažimys mažesnis uz vienetą ir didesnis už dešimt išvesti nurodytą tekstą.
             if ( cin ) {
                 pazymiai.push_back( k );//gautą atsakymą stumia i vektoriaus galą
             }
-            cout << "Ar dar bus? ";
+            cout << "Ar testi pazymiu generavima? ";
             cin >> o;
             cout << endl;
         }
@@ -139,7 +139,8 @@ while ( o == 'T' || o == 't') {//suksis ciklas kol 5vestis yra t
     double gal = 0;
 
     for ( int i = 0; i < s; i++, gal = 0 ) {
-        cout << studentai[i].vardas << "\t" << studentai[i].pavarde << "\t";
+        cout.width(10); cout << left<<studentai[i].vardas << " ";
+        cout.width(10); cout <<left<< studentai[i].pavarde << " ";
 
         if ( mediana ) {
             gal = 0.4 * studentai[i].med;
