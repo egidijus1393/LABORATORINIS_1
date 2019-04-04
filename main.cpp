@@ -51,9 +51,9 @@ if ( !cin ) { //Jeigu nëra inpto graþinamas vienetas.
 // Sukdami while cikla tikriname ar musu stringas nera lygus vienam ið nurodytu "find_first_not_of" argumentu, jei yra tada graþiname gera skaiciu jei ne jis graþina" blogai ivestas skaicius".
 int main() {
     cout<<"Ar nuskaityti failus is dokumento?"<<endl;
-    char bbd;
-    cin >> bbd;
-    if(bbd == 'T'|| bbd =='t'){
+    char asd;
+    cin >> asd;
+    if(asd == 'T'|| asd =='t'){
         ifstream fr;
 
     fr.open("FAILAS.txt");
