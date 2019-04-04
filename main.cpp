@@ -1,18 +1,22 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <vector>//Itraukiame papildoma vektoriaus biblioteka.
-//apsiraÅ¡iau bibliotekas
+#include <vector>
+#include <fstream>
+
+//apsirağiau bibliotekas
 using namespace std;
 
 struct Studentas {
+
     string vardas;
     string pavarde;
     double vid = 0;
     double med = 0;
     int egz = 0;
 };
-//apsiraÅ¡iau struktura
+
+//apsirağiau struktura
 void TikrintiPavadinima( string &pav ) {
     const int n = pav.length();
 
@@ -21,56 +25,71 @@ void TikrintiPavadinima( string &pav ) {
             continue;
         } else {
             cout <<  "Blogai ivestas studento vardas"  << endl;
-            cout << "Ä®veskite dar kartÄ…: ";
+            cout << "Áveskite dar kartà: ";
             cin >> pav;
 
             i = 0;
         }
     }
 }
-//apsiraÅ¡iu void funkcija kuri patikrina ar imanomas toks vardas(ar pirmas elemantas maÅ¾oji ar didÅ¾ioji raide o sekantys elementai iÅ¡ maÅ¾osios) uÅ¾klausiame vartotojo ivesti studento varda ji patikriname jei vardas neegzistuoja iÅ¡vedame i ekrana iveskite dar karta.
+
+//apsirağiu void funkcija kuri patikrina ar imanomas toks vardas(ar pirmas elemantas maşoji ar didşioji raide o sekantys elementai iğ maşosios) uşklausiame vartotojo ivesti studento varda ji patikriname jei vardas neegzistuoja iğvedame i ekrana iveskite dar karta.
 int GautiSkaiciu() {
     string input;
     cin >> input;
 
     while ( input.find_first_not_of( "0123456789" ) != string::npos ) {
         cout << "Blogai ivestas skaicius" << endl;
-        cout << "Ä®veskite dar karta: ";
+        cout << "Áveskite dar karta: ";
         cin >> input;
     }
-if ( !cin ) { //Jeigu nÄ—ra inpto graÅ¾inamas vienetas.
+if ( !cin ) { //Jeigu nëra inpto graşinamas vienetas.
         return 1;
     }
     return stoi( input );
 }
-// Sukdami while cikla tikriname ar musu stringas nera lygus vienam iÅ¡ nurodytu "find_first_not_of" argumentu, jei yra tada graÅ¾iname gera skaiciu jei ne jis graÅ¾ina" blogai ivestas skaicius".
+// Sukdami while cikla tikriname ar musu stringas nera lygus vienam iğ nurodytu "find_first_not_of" argumentu, jei yra tada graşiname gera skaiciu jei ne jis graşina" blogai ivestas skaicius".
 int main() {
+        ifstream fr;
+
+    fr.open("FAILAS.txt");
+
+    string v, a, b, c;
+
+
+    fr >> v >> a >> b >> c;
+
+    fr.close();
+
+
+    return 0;
+
     setlocale( LC_ALL, "Lithuanian" );
 //Nustatome lietuviu kalba.
     int s;
 
     cout << "Iveskite studentu skaiciu: ";
     cin >> s;
-//papraÅ¡ome vartotoja ivesti studentu skaiciu ta skaiciu panaudojame for ciklui norodyti iki kokios reikÅ¡mes sukamas foras.
+//paprağome vartotoja ivesti studentu skaiciu ta skaiciu panaudojame for ciklui norodyti iki kokios reikğmes sukamas foras.
     Studentas studentai[ 100 ];
 
     for ( int i = 0; i < s; i++ ) {
         cout << "Iveskite " << i+1 << " studento varda: ";
         cin >> studentai[i].vardas;
         TikrintiPavadinima( studentai[i].vardas );
-//Vartotoja praÅ¡ome ivesti varda ji siunciame i void funkcija kad patikritu ar jis egzistuoja.
+//Vartotoja prağome ivesti varda ji siunciame i void funkcija kad patikritu ar jis egzistuoja.
         cout << endl;
         cout << "Pavarde: ";
         cin >> studentai[i].pavarde;
         TikrintiPavadinima( studentai[i].pavarde );
 
-//Vartotoja praÅ¡ome ivesti pavarde ji siunciame i void funkcija kad patikritu ar jis egzistuoja.
+//Vartotoja prağome ivesti pavarde ji siunciame i void funkcija kad patikritu ar jis egzistuoja.
 
        vector<int> pazymiai;
         int k;
         char  o;
         cout << "Sugeneruotas pazimys: ";
-        k = rand() % 10 + 1 ;//generuojam atsitiktin5 skaiÄiÅ³ nuo 1 iki 10
+        k = rand() % 10 + 1 ;//generuojam atsitiktin5 skaièiø nuo 1 iki 10
         cout << k << endl;
             cout << "Ar testi pazymiu generavima? ";
             cin >> o;
@@ -80,20 +99,20 @@ while ( o == 'T' || o == 't') {//suksis ciklas kol 5vestis yra t
             cout << "Sugeneruotas pazimys: ";
             k = rand() % 10 + 1 ;
             cout << k << endl;
-//Kol paÅ¾imys maÅ¾esnis uz vienetÄ… ir didesnis uÅ¾ deÅ¡imt iÅ¡vesti nurodytÄ… tekstÄ….
+//Kol paşimys maşesnis uz vienetà ir didesnis uş değimt iğvesti nurodytà tekstà.
             if ( cin ) {
-                pazymiai.push_back( k );//gautÄ… atsakymÄ… stumia i vektoriaus galÄ…
+                pazymiai.push_back( k );//gautà atsakymà stumia i vektoriaus galà
             }
             cout << "Ar testi pazymiu generavima? ";
             cin >> o;
             cout << endl;
         }
-//pridedame elementÄ… pabaigoje
+//pridedame elementà pabaigoje
         cin.clear();
 
-//IÅ¡trina bloga Ä¯vestÄ¯.
+//Iğtrina bloga ávestá.
         int n = pazymiai.size();
-// nuskaitome kiek paÅ¾ymiÅ³.
+// nuskaitome kiek paşymiø.
         if ( n ) {
             int suma = 0;
 
@@ -110,17 +129,17 @@ while ( o == 'T' || o == 't') {//suksis ciklas kol 5vestis yra t
 
         if ( !( n % 2 ) ) {
             studentai[i].med /= 2;
-            //ApskaiÄiuojame mediana
+            //Apskaièiuojame mediana
         }
 
         studentai[i].vid = suma / n;
     }
-//vidurki apskaiciuojame Å¡ia formule.
+//vidurki apskaiciuojame ğia formule.
         cout << "Iveskite egzamino rezultata: ";
         studentai[i].egz = rand()% 10 + 1;
         cout << studentai[i].egz<<endl;
     }
-//Vartotoja yra praÅ¡oma ivesti egzamino paÅ¾imi iÅ¡ funkcijos "GautiSkaiciu()".
+//Vartotoja yra prağoma ivesti egzamino paşimi iğ funkcijos "GautiSkaiciu()".
     cout << "Isvesti mediana (T) ar vidurki (N): ";
     char ats;
     cin >> ats;
@@ -155,4 +174,4 @@ while ( o == 'T' || o == 't') {//suksis ciklas kol 5vestis yra t
 
     return 0;
 }
-//viskas iÅ¡spauzdinama lenteleje.
+//viskas iğspauzdinama lenteleje.
