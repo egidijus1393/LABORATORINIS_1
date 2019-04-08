@@ -1,8 +1,10 @@
 ﻿#include <iostream>
 #include <string>
 #include <vector>
+#include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <algorithm>
 
 ///apsirasau bibliotekas.
@@ -168,10 +170,10 @@ int main() {
     cout << "\nVardas\tPavarde\tPazimys (Vid.)\tPazimys (Med.)" << endl;
     cout << string( 61, '-' ) << endl;
 
-    for ( const auto &s : studentas ) {
-        cout << s.vardas << "\t" << s.pavarde
-            << "\t" << ( 0.4 * s.vidurkis + 0.6 * s.egzamino_rez )
-            << "\t" << ( 0.4 * s.mediana + 0.6 * s.egzamino_rez ) << endl;
+   for ( const auto &s : studentas ) {
+        cout << left << setw( 16 ) << s.vardas << setw( 15 ) << s.pavarde
+            << setw( 13 ) << right << ( 0.6 * s.vidurkis + 0.4 * s.egzamino_rez )
+            << setw( 17 ) << ( 0.6 * s.mediana + 0.4 * s.egzamino_rez ) << endl;
     }
 
     return 0;
