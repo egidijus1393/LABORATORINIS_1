@@ -1,183 +1,179 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
-#include <iomanip>
 #include <vector>
+#include <ctime>
 #include <fstream>
+#include <algorithm>
 
-//apsiraðiau bibliotekas
+///apsirasau bibliotekas.
+
 using namespace std;
 
 struct Studentas {
-
     string vardas;
     string pavarde;
-    double vid = 0;
-    double med = 0;
-    int egz = 0;
+    unsigned egzamino_rez  = 0;
+    double vidurkis      = 0;
+    double mediana       = 0;
 };
+///apsirasiau struktura.
 
-//apsiraðiau struktura
-void TikrintiPavadinima( string &pav ) {
-    const int n = pav.length();
+void duomenys( string &ivestis, const string &kartoti ) {
+    cin.clear();
+    cout << "neteisinga ivestis." << endl;
+    cout << kartoti << ": ";
+    getline( cin, ivestis );
+}
+/// jei bloga ivestis prasoma kartoti varda.
 
-    for ( int i = ( pav[0] >= 65 && pav[0] <= 90 ); i < n; i++ ) {
-        if ( pav[i] >= 97 && pav[i] <= 122 && pav[0] >= 65 && pav[0] <= 90 ) {
-            continue;
-        } else {
-            cout <<  "Blogai ivestas studento vardas"  << endl;
-            cout << "Áveskite dar kartà: ";
-            cin >> pav;
+void TikrintiPavadinima( string &ivestis, const string &kartoti ) {
+    cin.clear();
+    getline( cin, ivestis );
 
-            i = 0;
+    while ( ivestis.size() < 2 || ( ivestis[ 0 ] < 65 || ivestis[ 0 ] > 90 ) ||
+            ivestis.substr( 1 ).find_first_not_of( "abcdefghijklmnopqrstuvwxyz" ) != string::npos ) {
+        duomenys( ivestis, kartoti );
+    }
+}
+///apsirasiu void funkcijas kurios patikrina ar imanomas toks vardas(ar pirmas elemantas mazoji ar didzioji raide o sekantys elementai is mazosios) jei blogas vardas iskvieciama funkcija.
+unsigned GautiSkaiciu( const string &kartoti ) {
+    string g;
+    unsigned k = 0;
+
+    cout << kartoti << ": ";
+    getline( cin, g );
+
+    if ( !cin.eof() ) {
+        while ( g.empty() || g.find_first_not_of( "0123456789" ) != string::npos ||
+            ( ( k = stoul( g ) ) < 1 || k > 10 ) ) {
+            duomenys( g, kartoti );
         }
     }
+
+    return k;
 }
+/// Sukdami while cikla tikriname ar musu stringas nera lygus vienam is nurodytu "find_first_not_of" argumentu, jei yra tada graziname gera skaiciu jei ne jis grazina" neteisinga ivestis" ir praso vel ivesti skaiciu.
 
-//apsiraðiu void funkcija kuri patikrina ar imanomas toks vardas(ar pirmas elemantas maþoji ar didþioji raide o sekantys elementai ið maþosios) uþklausiame vartotojo ivesti studento varda ji patikriname jei vardas neegzistuoja iðvedame i ekrana iveskite dar karta.
-int GautiSkaiciu() {
-    string input;
-    cin >> input;
+void skaiciuoti_med_vid( Studentas &s, const vector<unsigned> &pazymiai ) {
+    if ( pazymiai.size() ) {
+        unsigned sum = 0;
 
-    while ( input.find_first_not_of( "0123456789" ) != string::npos ) {
-        cout << "Blogai ivestas skaicius" << endl;
-        cout << "Áveskite dar karta: ";
-        cin >> input;
-    }
-if ( !cin ) { //Jeigu nëra inpto graþinamas vienetas.
-        return 1;
-    }
-    return stoi( input );
-}
-// Sukdami while cikla tikriname ar musu stringas nera lygus vienam ið nurodytu "find_first_not_of" argumentu, jei yra tada graþiname gera skaiciu jei ne jis graþina" blogai ivestas skaicius".
-int main() {
-    cout<<"Ar nuskaityti failus is dokumento?"<<endl;
-    char asd;
-    cin >> asd;
-    if(asd == 'T'|| asd =='t'){
-        ifstream fr;
-
-    fr.open("FAILAS.txt");
-
-    string vardas, pav, b, c;
-
-
-    fr >> vardas >> pav >> b >> c;
-
-    fr.close();
-
-
-   setlocale( LC_ALL, "Lithuanian" );
-cout<<vardas<<pav<<endl;
-    }
-    else{
-
-//Nustatome lietuviu kalba.
-    int s;
-
-    cout << "Iveskite studentu skaiciu: ";
-    cin >> s;
-//papraðome vartotoja ivesti studentu skaiciu ta skaiciu panaudojame for ciklui norodyti iki kokios reikðmes sukamas foras.
-    Studentas studentai[ 100 ];
-
-    for ( int i = 0; i < s; i++ ) {
-        cout << "Iveskite " << i+1 << " studento varda: ";
-        cin >> studentai[i].vardas;
-        TikrintiPavadinima( studentai[i].vardas );
-//Vartotoja praðome ivesti varda ji siunciame i void funkcija kad patikritu ar jis egzistuoja.
-        cout << endl;
-        cout << "Pavarde: ";
-        cin >> studentai[i].pavarde;
-        TikrintiPavadinima( studentai[i].pavarde );
-
-//Vartotoja praðome ivesti pavarde ji siunciame i void funkcija kad patikritu ar jis egzistuoja.
-
-       vector<int> pazymiai;
-        int k;
-        char  o;
-        cout << "Sugeneruotas pazimys: ";
-        k = rand() % 10 + 1 ;//generuojam atsitiktin5 skaièiø nuo 1 iki 10
-        cout << k << endl;
-            cout << "Ar testi pazymiu generavima? ";
-            cin >> o;
-            cout << endl;
-
-while ( o == 'T' || o == 't') {//suksis ciklas kol 5vestis yra t
-            cout << "Sugeneruotas pazimys: ";
-            k = rand() % 10 + 1 ;
-            cout << k << endl;
-//Kol paþimys maþesnis uz vienetà ir didesnis uþ deðimt iðvesti nurodytà tekstà.
-            if ( cin ) {
-                pazymiai.push_back( k );//gautà atsakymà stumia i vektoriaus galà
+        for ( vector<unsigned>::size_type i = 0, n = pazymiai.size(); n != i; ++i ) {
+            if ( n % 2 && i == ( n / 2 ) ) {
+                s.mediana = pazymiai[ i ];
+            } else if ( !( n % 2 ) && ( i == ( n / 2 ) || i == ( n / 2 + 1 ) ) ) {
+                s.mediana += pazymiai[ i ];
             }
-            cout << "Ar testi pazymiu generavima? ";
-            cin >> o;
-            cout << endl;
+
+            sum += pazymiai[ i ];
         }
-//pridedame elementà pabaigoje
-        cin.clear();
 
-//Iðtrina bloga ávestá.
-        int n = pazymiai.size();
-// nuskaitome kiek paþymiø.
-        if ( n ) {
-            int suma = 0;
+        s.mediana    = ( pazymiai.size() % 2 ) ? s.mediana : s.mediana / 2;
+        s.vidurkis   = sum / pazymiai.size();
+    }
+}
+/// su vektorium nustatom kiek yra pazymiu, jei lyginis skaicius skaiciuojame vienaip jei nelyginis kitaip.
+int main() {
+    srand( time( NULL ) );
 
-            for ( int j = 0; j < n; j++ ) {
-                suma += pazymiai[ i ];
+    vector<Studentas> studentas;
+    Studentas s;
 
-                if ( n % 2 && j == ( n / 2 + 1 ) ) {
-                    studentai[ i ].med = pazymiai[ i ];
-                } else if ( !( n % 2 ) && ( j == ( n / 2 ) || j == ( n / 2 + 1 ) ) ) {
-                    studentai[ i ].med += pazymiai[ i ];
+    char ans;
+
+    cout << "skaityti is failo (T/N): ";
+    cin >> ans;
+    cin.ignore();
+
+    unsigned k;
+///klausiame vartotojo ar nuskaityti duomenis is failo
+    if ( ans == 't' || ans == 'T' ) {
+        ifstream in( "kursiokai.txt" );
+/// jei ivestis 't' arba 'T' nuskaitome duomenis is txt dokumento "kursiokai"
+        if ( !in ) {
+            cout << "klaida atidarant faila." << endl;
+            return -1;
+        }
+/// jei nerandama tokio failo ivedame klaida.
+        string linija;
+        getline( in, linija );
+
+        while ( !in.eof() ) {
+            in >> s.vardas >> s.pavarde;
+///kol nesibags tekstinis failas nebaigs nuskaitymas
+            vector<unsigned> pazymiai;
+            for ( size_t i = 0; 5 != i; ++i ) {
+                pazymiai.push_back( ( in >> k, k ) );
+            }
+/// nuskaito pazymi ir ji nukelia i gala.
+            in >> s.egzamino_rez;
+            skaiciuoti_med_vid( s, pazymiai );
+            studentas.push_back( s );
+        }
+/// nuskaito egzamino pazumi ir studento duomenis nukelia i gala
+        in.close();
+    } else {
+        ///jeigu vartotojas nusprendzia kad nenuskaityti is failo.
+        do {
+            cout << "Vardas: ";
+            TikrintiPavadinima( s.vardas, "Vardas" );
+
+            cout << "Pavarde: ";
+           TikrintiPavadinima( s.pavarde, "Pavarde" );
+
+            cout << "Generuoti pazymius atsitiktinai (T/N): ";
+            cin >> ans;
+            cin.ignore();
+/// vartotoja prasome tam tikru ivesciu
+            vector<unsigned> pazymiai;
+
+            if ( ans == 'T' || ans == 't' ) {
+                unsigned n = GautiSkaiciu( "namu darbu skaicius" );
+
+                while ( n-- ) {
+                    cout << "Atsitiktinis pazimys: " << ( k = rand() % 10 + 1 ) << endl;
+
+                    pazymiai.push_back( k );
+                }
+                ///sugeneruojami atsitiktiniai pazymiai ir jie nukeiami i gala.
+            } else {
+                cout << "paspauskite CTRL + Z kad sustabdytumete." << endl;
+
+                while ( !cin.eof() ) {
+                    k = GautiSkaiciu( "namu darbo pazimys" );
+
+                    if ( !cin.eof() ) {
+                        pazymiai.push_back( k );
+                    }
                 }
             }
-//Nustatomas medianos tipas.
+/// ivedamas pazimys ir nukeliamas i gala.
+            skaiciuoti_med_vid( s, pazymiai );
 
-        if ( !( n % 2 ) ) {
-            studentai[i].med /= 2;
-            //Apskaièiuojame mediana
-        }
-
-        studentai[i].vid = suma / n;
+            cin.clear();
+            s.egzamino_rez = GautiSkaiciu( "Egzamino Pazimys" );
+            studentas.push_back( s );
+/// ivedamas pazimys ir nukeliamas i gala
+            cout << "Prideti studenta (T/N): ";
+            cin >> ans;
+            cin.ignore();
+        } while ( !cin.eof() && ( ans == 't' || ans == 'T' ) );
     }
-//vidurki apskaiciuojame ðia formule.
-        cout << "Iveskite egzamino rezultata: ";
-        studentai[i].egz = rand()% 10 + 1;
-        cout << studentai[i].egz<<endl;
-    }
-//Vartotoja yra praðoma ivesti egzamino paþimi ið funkcijos "GautiSkaiciu()".
-    cout << "Isvesti mediana (T) ar vidurki (N): ";
-    char ats;
-    cin >> ats;
+/// uzklausa del pridedamo studento.
+    sort( studentas.begin(), studentas.end(),
+               [] ( const Studentas &lhs, const Studentas &rhs ) {
+        return lhs.vardas > rhs.vardas;
+    } );
+/// atrusiuojame vardus bei pavardes pagal abecele.
+    cout << "\nVardas\tPavarde\tPazimys (Vid.)\tPazimys (Med.)" << endl;
+    cout << string( 61, '-' ) << endl;
 
-    bool mediana = false;
-
-    if ( ats == 'T' || ats == 't' ) {
-        mediana = true;
-        cout << "Vardas\t" << "Pavarde\t" << "Galutinis (Med.)" << endl;
-    } else {
-        cout << "Vardas\t" << "Pavarde\t" << "Galutinis (Vid.)" << endl;
-    }
-
-    cout << "--------------------------------" << endl;
-
-    double gal = 0;
-
-    for ( int i = 0; i < s; i++, gal = 0 ) {
-        cout.width(10); cout << left<<studentai[i].vardas << " ";
-        cout.width(10); cout <<left<< studentai[i].pavarde << " ";
-
-        if ( mediana ) {
-            gal = 0.4 * studentai[i].med;
-        } else {
-            gal = 0.4 * studentai[i].vid;
-        }
-
-        gal += 0.6 * studentai[i].egz;
-
-        cout << fixed << setprecision( 2 ) << gal << endl;
+    for ( const auto &s : studentas ) {
+        cout << s.vardas << "\t" << s.pavarde
+            << "\t" << ( 0.4 * s.vidurkis + 0.6 * s.egzamino_rez )
+            << "\t" << ( 0.4 * s.mediana + 0.6 * s.egzamino_rez ) << endl;
     }
 
     return 0;
-}}
-//viskas iðspauzdinama lenteleje.
+}
+///rezultatai atspauzdinami lenteleje.
